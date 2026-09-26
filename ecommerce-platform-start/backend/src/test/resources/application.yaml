@@ -1,0 +1,32 @@
+# Configurare pentru teste: H2 in memorie (o baza noua pentru fiecare context), fara Postgres si fara Kafka real.
+spring:
+  application:
+    name: ecommerce-backend-test
+  datasource:
+    url: jdbc:h2:mem:${random.uuid};MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  kafka:
+    bootstrap-servers: localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+        max.block.ms: 1000
+
+app:
+  jwt:
+    secret: test-secret-test-secret-test-secret-0123456789
+    expiration-ms: 3600000
+  admin:
+    email: admin@test.local
+    password: admin123
+  kafka:
+    topics:
+      task-created: task-created
+  cors:
+    allowed-origins: http://localhost:3000
